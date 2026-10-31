@@ -1,0 +1,40 @@
+# Smart traffic diversion advisories. Decision support only: thresholds are
+# UNVERIFIED defaults and must be reviewed by the traffic / pollution-control
+# authority before operational use.
+
+calibration_status: "unverified_defaults"
+
+grid:
+  # Odd number of cells per side, centred on the selected location.
+  size: 3
+  # Provider air-quality data is a coarse model (CAMS); cells closer than this
+  # mostly share the same modelled pollutant values.
+  spacing_deg: 0.25
+
+horizon_hours: 72
+
+provider_variables:
+  weather: [wind_speed_10m, boundary_layer_height]
+  air_quality: [pm2_5, pm10, nitrogen_dioxide, carbon_monoxide, sulphur_dioxide, ozone]
+
+stagnation:
+  # Wind below this (m/s) is treated as calm.
+  low_wind_ms: 2.0
+  # Ventilation index = wind speed (m/s) x boundary-layer height (m), in m^2/s.
+  # At or below this value, dispersion of surface emissions is treated as poor.
+  poor_ventilation_m2s: 6000
+
+pollution:
+  # Hourly modelled concentrations, ug/m3.
+  elevated: { pm25: 60, pm10: 100 }
+  severe: { pm25: 90, pm10: 250 }
+
+tiers:
+  # clear    -> no action suggested
+  # watch    -> stagnation or elevated particulates; prepare diversion plans
+  # divert   -> stagnation AND severe particulates; consider diverting heavy commercial vehicles
+  watch_label: "Watch"
+  divert_label: "Consider diversion"
+  clear_label: "Clear"
+
+minimum_window_hours: 2

@@ -1,0 +1,16 @@
+.env
+*.db
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+node_modules/
+dist/
+coverage/
+models/*.joblib
+models/*.json
+datasets/raw/*
+!datasets/raw/.gitkeep
+.DS_Store
+models/**
+!models/.gitkeep

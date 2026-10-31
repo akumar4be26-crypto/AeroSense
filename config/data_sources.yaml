@@ -1,0 +1,55 @@
+# External data providers. Endpoints, priorities and cache policy live here so
+# providers can be swapped without touching business logic. API keys come from
+# environment variables, never from this file.
+
+data_classes:
+  - LIVE_OBSERVATION
+  - GROUND_STATION_OBSERVATION
+  - MODELLED_ESTIMATE
+  - WEATHER_FORECAST
+  - AIR_QUALITY_FORECAST
+  - SYNTHETIC_DEMONSTRATION_DATA
+
+weather:
+  - name: "open_meteo_weather"
+    enabled: true
+    priority: 1
+    base_url: "https://api.open-meteo.com/v1/forecast"
+    timeout_seconds: 10
+    retries: 2
+    refresh_seconds: 900
+    data_class: "WEATHER_FORECAST"
+    current_variables: [temperature_2m, relative_humidity_2m, wind_speed_10m, wind_direction_10m, surface_pressure, rain, cloud_cover]
+    hourly_variables: [temperature_2m, relative_humidity_2m, wind_speed_10m, wind_direction_10m, surface_pressure, rain, cloud_cover]
+
+air_quality:
+  # Open-Meteo air quality is a MODELLED ESTIMATE (CAMS-based), not a sensor
+  # reading. It must be labelled as such in the UI.
+  - name: "open_meteo_air_quality"
+    enabled: true
+    priority: 1
+    base_url: "https://air-quality-api.open-meteo.com/v1/air-quality"
+    timeout_seconds: 10
+    retries: 2
+    refresh_seconds: 900
+    data_class: "MODELLED_ESTIMATE"
+    current_variables: [pm2_5, pm10, nitrogen_dioxide, sulphur_dioxide, carbon_monoxide, ozone]
+    hourly_variables: [pm2_5, pm10, nitrogen_dioxide, sulphur_dioxide, carbon_monoxide, ozone]
+
+reverse_geocoding:
+  - name: "nominatim"
+    enabled: true
+    priority: 1
+    base_url: "https://nominatim.openstreetmap.org/reverse"
+    timeout_seconds: 8
+    retries: 1
+    # Nominatim usage policy: identify the app and keep to <= 1 request/second.
+    min_interval_seconds: 1.0
+    cache_ttl_seconds: 86400
+    # Coordinates are rounded to this many decimals for the cache key, which
+    # also limits how precisely a location is retained.
+    cache_key_decimals: 3
+
+# Ground stations are not fabricated. This stays empty until a real,
+# licensed station provider is configured.
+ground_stations: []

@@ -1,0 +1,81 @@
+# Indian National AQI (CPCB) configuration. US EPA AQI is never used.
+#
+# VERIFY BEFORE RELEASE: these breakpoints were transcribed from the CPCB
+# National AQI methodology and must be checked against the current official
+# CPCB documentation (cpcb.nic.in). Treat as unverified until that is recorded
+# in docs/methodology.md.
+#
+# Matching rule: a concentration belongs to the first band whose c_hi is >= the
+# concentration. c_hi: null marks the open-ended top band. The engine extends
+# the previous band's width and caps the sub-index at 500 (open_ended_policy).
+
+open_ended_policy: "extend_previous_band_width_cap_500"
+
+categories:
+  - {name: "Good",         min: 0,   max: 50}
+  - {name: "Satisfactory", min: 51,  max: 100}
+  - {name: "Moderate",     min: 101, max: 200}
+  - {name: "Poor",         min: 201, max: 300}
+  - {name: "Very Poor",    min: 301, max: 400}
+  - {name: "Severe",       min: 401, max: 500}
+
+# Overall AQI is reported only if at least min_pollutants valid sub-indices
+# exist and at least one of required_one_of is among them.
+validity:
+  min_pollutants: 3
+  required_one_of: [pm25, pm10]
+
+# Index bands shared by all pollutants.
+index_bands: &bands
+  - [0, 50]
+  - [51, 100]
+  - [101, 200]
+  - [201, 300]
+  - [301, 400]
+  - [401, 500]
+
+pollutants:
+  pm25:
+    label: "PM2.5"
+    unit: "ug/m3"
+    averaging: "24h"
+    c_hi: [30, 60, 90, 120, 250, null]
+  pm10:
+    label: "PM10"
+    unit: "ug/m3"
+    averaging: "24h"
+    c_hi: [50, 100, 250, 350, 430, null]
+  no2:
+    label: "NO2"
+    unit: "ug/m3"
+    averaging: "24h"
+    c_hi: [40, 80, 180, 280, 400, null]
+  o3:
+    label: "O3"
+    unit: "ug/m3"
+    averaging: "8h"
+    c_hi: [50, 100, 168, 208, 748, null]
+  co:
+    label: "CO"
+    unit: "mg/m3"
+    averaging: "8h"
+    c_hi: [1.0, 2.0, 10, 17, 34, null]
+  so2:
+    label: "SO2"
+    unit: "ug/m3"
+    averaging: "24h"
+    c_hi: [40, 80, 380, 800, 1600, null]
+  nh3:
+    label: "NH3"
+    unit: "ug/m3"
+    averaging: "24h"
+    c_hi: [200, 400, 800, 1200, 1800, null]
+  pb:
+    label: "Pb"
+    unit: "ug/m3"
+    averaging: "24h"
+    c_hi: [0.5, 1.0, 2.0, 3.0, 3.5, null]
+
+# Open-Meteo reports CO in ug/m3; CPCB uses mg/m3.
+unit_conversions:
+  co_ugm3_to_mgm3: 0.001

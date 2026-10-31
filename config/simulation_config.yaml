@@ -1,0 +1,68 @@
+# Diwali what-if simulator configuration.
+#
+# SCIENTIFIC STATUS: every coefficient below is an ILLUSTRATIVE, UNCALIBRATED
+# placeholder. The simulator reads calibration_status and must display it, along
+# with the assumptions and uncertainty, next to every scenario result. Replace
+# values (and set calibration_status: calibrated) only when fitted against
+# observed data with documented provenance.
+
+calibration_status: "illustrative_uncalibrated"
+
+parameters:
+  firecracker_activity:   {min: 0,  default: 50, max: 100, unit: "%"}
+  traffic_intensity:      {min: 0,  default: 50, max: 100, unit: "%"}
+  industrial_activity:    {min: 0,  default: 50, max: 100, unit: "%"}
+  construction_activity:  {min: 0,  default: 50, max: 100, unit: "%"}
+  wind_speed:             {min: 0,  default: 10, max: 50,  unit: "km/h"}
+  humidity:               {min: 0,  default: 60, max: 100, unit: "%"}
+  rainfall:               {min: 0,  default: 0,  max: 50,  unit: "mm"}
+  temperature:            {min: -5, default: 25, max: 50,  unit: "degC"}
+
+# Source contribution at 100% activity, before weather dispersion.
+# Contribution(activity) = full_activity_ugm3 * (activity/100) ** response_exponent
+# so a 30% cut in an activity is NOT a 30% cut in AQI: the response is
+# nonlinear per source, additive across sources, and AQI is a piecewise-linear
+# function of concentration.
+sources:
+  firecracker:
+    pm25_full_activity_ugm3: 180.0
+    pm10_full_activity_ugm3: 240.0
+    response_exponent: 1.2
+  traffic:
+    pm25_full_activity_ugm3: 35.0
+    pm10_full_activity_ugm3: 60.0
+    response_exponent: 1.0
+  industrial:
+    pm25_full_activity_ugm3: 30.0
+    pm10_full_activity_ugm3: 45.0
+    response_exponent: 1.0
+  construction:
+    pm25_full_activity_ugm3: 12.0
+    pm10_full_activity_ugm3: 70.0
+    response_exponent: 1.0
+
+# Regional background that no local activity slider removes.
+background:
+  pm25_ugm3: 25.0
+  pm10_ugm3: 50.0
+
+dispersion:
+  wind:
+    reference_speed_kmh: 10.0
+    exponent: 0.5          # dilution ~ (reference / speed) ** exponent
+    min_factor: 0.45
+    max_factor: 2.0
+  rain_washout:
+    per_mm: 0.025          # fractional removal per mm of rain
+    max_removal: 0.60
+  humidity:
+    threshold_pct: 70.0    # above this, hygroscopic growth raises PM2.5 mass
+    pm25_gain_per_pct: 0.004
+  temperature:
+    cold_reference_degc: 15.0
+    cold_penalty_per_degc: 0.01   # shallower mixing layer when colder
+    max_penalty: 0.30
+
+uncertainty:
+  relative_band: 0.25      # +/- fraction shown around scenario results
+  label: "Illustrative range, not a statistical confidence interval"

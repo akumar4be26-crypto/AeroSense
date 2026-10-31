@@ -1,0 +1,37 @@
+# Safe-travel / activity windows.
+#
+# calibration_status: UNVERIFIED. The per-profile limits below are illustrative defaults,
+# not medical or regulatory guidance. They must be reviewed (ideally with a public-health
+# source) before anyone relies on them. The hourly index is a CPCB-breakpoint sub-index
+# computed from *hourly* modelled concentrations; it is NOT the official 24h-average AQI.
+calibration_status: unverified_defaults
+
+horizon_hours: 72
+# Only hours inside this local window are offered (start inclusive, end exclusive).
+waking_hours: {start: 5, end: 22}
+
+provider_variables:
+  air_quality: [pm2_5, pm10, nitrogen_dioxide, carbon_monoxide, sulphur_dioxide, ozone]
+
+# An hour is "safe" at or below safe_max, "caution" up to caution_max, otherwise "avoid".
+profiles:
+  runner:
+    label: Runner
+    effort: high
+    safe_max: 75
+    caution_max: 150
+    window_hours: 1
+  cyclist:
+    label: Cyclist
+    effort: moderate
+    safe_max: 100
+    caution_max: 175
+    window_hours: 1
+  commuter:
+    label: Daily commuter
+    effort: light
+    safe_max: 150
+    caution_max: 250
+    window_hours: 1
+
+best_windows_per_profile: 3

@@ -1,0 +1,82 @@
+/* Design tokens. Every colour, size, radius, blur and timing used by the UI comes from here. */
+:root {
+  /* palette: warm neutrals + one accent */
+  --c-bg: #efe9dd;
+  --c-bg-glow-a: #e8b9a0;
+  --c-bg-glow-b: #b9cdb4;
+  --c-bg-glow-c: #c9c3dd;
+  --c-ink: #1f1c18;
+  --c-ink-soft: #4d473e;
+  --c-muted: #6f685c;
+  --c-accent: #a8341a;
+  --c-accent-ink: #fff8f1;
+  --c-ok: #2f7d4f;
+  --c-warn: #a77d0a;
+  --c-danger: #a8341a;
+
+  /* glass surfaces */
+  --glass-fill: rgba(255, 252, 246, 0.55);
+  --glass-fill-strong: rgba(255, 252, 246, 0.78);
+  --glass-fill-hover: rgba(255, 252, 246, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.65);
+  --glass-edge: rgba(31, 28, 24, 0.1);
+  --glass-blur: 18px;
+  --glass-saturate: 1.35;
+  --glass-shadow: 0 1px 0 rgba(255, 255, 255, 0.7) inset, 0 10px 30px -12px rgba(60, 40, 20, 0.28);
+  --glass-shadow-lift: 0 1px 0 rgba(255, 255, 255, 0.8) inset, 0 18px 40px -14px rgba(60, 40, 20, 0.35);
+
+  /* AQI categories */
+  --aqi-good: #2f7d4f;
+  --aqi-satisfactory: #6c8f22;
+  --aqi-moderate: #a77d0a;
+  --aqi-poor: #c25a12;
+  --aqi-very-poor: #a8341a;
+  --aqi-severe: #7a1a2b;
+
+  /* typography */
+  --font-display: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+  --font-body: -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --fs-xs: 0.75rem;
+  --fs-sm: 0.8125rem;
+  --fs-md: 0.9375rem;
+  --fs-lg: 1.125rem;
+  --fs-xl: 1.5rem;
+  --fs-2xl: clamp(2rem, 4.5vw, 3.25rem);
+  --fs-hero: clamp(4.5rem, 10vw, 7rem);
+  --lh-tight: 1.08;
+  --lh-body: 1.5;
+
+  /* spacing, radii, layout */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 24px;
+  --sp-6: 32px;
+  --sp-7: 48px;
+  --r-sm: 10px;
+  --r-md: 16px;
+  --r-lg: 22px;
+  --r-pill: 999px;
+  --content-width: 1160px;
+  --gutter: 28px;
+  --nav-height: 64px;
+
+  /* motion */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-soft: cubic-bezier(0.4, 0, 0.2, 1);
+  --dur-fast: 140ms;
+  --dur-base: 260ms;
+  --dur-slow: 640ms;
+  --stagger: 70ms;
+}
+
+@media (max-width: 860px) {
+  :root { --gutter: 18px; --glass-blur: 14px; }
+}
+
+/* Browsers without backdrop-filter get a more opaque surface so text stays legible. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  :root { --glass-fill: rgba(255, 252, 246, 0.92); --glass-fill-strong: rgba(255, 252, 246, 0.96); --glass-fill-hover: rgba(255, 252, 246, 0.96); }
+}

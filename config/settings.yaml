@@ -1,0 +1,50 @@
+# AERIS application settings. Every value here is read at startup and validated
+# by backend/app/core/config.py. Nothing in business logic should hardcode these.
+
+app:
+  name: "AERIS"
+  full_name: "AI Environmental Risk & Intelligence System"
+  tagline: "Predict Pollution. Understand Impact. Protect Communities."
+  version: "0.1.0"
+  timezone: "Asia/Kolkata"
+
+# Demonstration default only. Replaced by real device coordinates once the user
+# grants GPS permission.
+default_location:
+  city: "Patiala"
+  state: "Punjab"
+  country: "India"
+  latitude: 30.353882
+  longitude: 76.372210
+
+forecast:
+  durations_hours: [24, 48, 72]
+  interval_hours: 1
+
+gps:
+  enabled: true
+  high_accuracy: true
+  update_interval_ms: 15000
+  timeout_ms: 15000
+  maximum_age_ms: 10000
+  # Precise location history is never persisted unless the user explicitly opts in.
+  persist_history_default: false
+
+refresh:
+  api_refresh_interval_seconds: 900
+  cache_ttl_seconds: 600
+  geocode_cache_ttl_seconds: 86400
+
+# live | historical | demonstration. The platform never silently switches
+# between modes: allow_silent_fallback must stay false.
+data_mode:
+  default: "live"
+  allow_silent_fallback: false
+
+map:
+  default_zoom: 12
+  search_radii_km: [1, 3, 5, 10, 20]
+  default_radius_km: 5
+
+rate_limit:
+  requests_per_minute: 120
